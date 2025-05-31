@@ -41,7 +41,7 @@ def view_core_segments(ori_url):
         print(f"Failed to extract sentences from markdown for URL: {ori_url}")  # 添加日志
         return jsonify({'error': '提炼核心语句失败'}), 500
     print(f"Extracted sentences: {quotes}")  # 添加日志
-    return render_template('card.html', quotes=quotes, ori_url=ori_url, title='READ CARD ' + datetime.datetime.now().strftime("%Y/%m/%d"))
+    return render_template('card.html', quotes=quotes, ori_url=ori_url, day=datetime.datetime.now().strftime("%Y/%m/%d"), title='READ CARD ' + datetime.datetime.now().strftime("%Y/%m/%d"))
 
 @app.route('/render/<path:ori_url>', methods=['GET'])
 def core_sentences_image(ori_url):

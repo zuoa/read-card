@@ -28,6 +28,7 @@
             --page-bg: #F8F9FA;
             --card-bg: #FFFFFF;
             --button-bg: #333333;
+            --border: #333;
         }
 
         body {
@@ -41,15 +42,49 @@
 
         .quote-card {
             background-color: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid #E0E0E0;
-            box-shadow: 0 2px 5px 2px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px 1px rgba(0,0,0,0.1);
             max-width: 480px;
             margin: 0 auto;
             overflow: visible;
             padding-bottom: 20px;
         }
 
+        .card-header {
+            background: #fcfcfc;
+            border-top-right-radius: 12px;
+            border-top-left-radius: 12px;
+            padding: 25px 25px 15px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #F3F3F3;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
         .quote-content {
             padding: 24px;
         }
@@ -65,7 +100,7 @@
         }
 
         .quote-translation {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--secondary-text);
             font-weight: 400;
             border-left: 2px solid #EEE;
@@ -168,6 +203,12 @@
 </head>
 <body>
     <div class="quote-card" id="quoteCard">
+        <div class="card-header">
+            <div class="card-bg"></div>
+            <h2 class="card-title">READ CARD</h2>
+            <p class="card-date">{{day}}</p>
+
+        </div>
         <div class="quote-content">
             {% for quote in quotes %}
             <!-- 引用内容 -->
