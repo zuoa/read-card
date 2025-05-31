@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Anime.js -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- HTML to Canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --primary-text: #212121;
+            --secondary-text: #757575;
+            --divider: #EEEEEE;
+            --page-bg: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --button-bg: #333333;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--page-bg);
+            color: var(--primary-text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .quote-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+            box-shadow: 0 2px 5px 2px rgba(0,0,0,0.05);
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .quote-content {
+            padding: 24px;
+        }
+
+        .quote-item {
+            margin-bottom: 28px;
+        }
+
+        .quote-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .quote-translation {
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            font-weight: 400;
+            border-left: 2px solid #EEE;
+            padding-left: 8px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--divider);
+            margin: 16px 0;
+        }
+
+        .qrcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            border-top: 1px solid var(--divider);
+        }
+
+        .qrcode-title {
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            margin-top: 12px;
+            text-align: center;
+            max-width: 80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .download-btn {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: block;
+            margin: 30px auto 0;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .download-btn:hover {
+            background-color: #212121;
+        }
+
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+
+        .download-btn:disabled {
+            background-color: #BDBDBD;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .quote-content {
+                padding: 18px;
+            }
+
+            .quote-text {
+                font-size: 1.05rem;
+            }
+
+            .quote-translation {
+                font-size: 0.9rem;
+            }
+
+            .download-btn {
+                padding: 10px 24px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .quote-content {
+                padding: 16px;
+            }
+
+            .quote-text {
+                font-size: 1rem;
+            }
+
+            .quote-item {
+                margin-bottom: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quote-card" id="quoteCard">
+        <div class="quote-content">
+            {% for quote in quotes %}
+            <!-- 引用内容 -->
+            <div class="quote-item">
+                <p class="quote-text">{{quote.text}}</p>
+                <p class="quote-translation">{{quote.translation}}</p>
+            </div>
+            {% if not loop.last %}
+                <div class="divider"></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- 二维码区域 -->
+        <div class="qrcode-container">
+            <div id="qrcode"></div>
+            <div class="qrcode-title" id="qrcodeTitle">{{title}}</div>
+        </div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">下载知识卡片</button>
+
+    <script>
+        // 设置页面标题和二维码标题
+        document.title = "{{ title }}";
+        document.getElementById('qrcodeTitle').textContent = document.title;
+
+        // 生成二维码
+        new QRCode(document.getElementById("qrcode"), {
+            text: '{{ ori_url }}',
+            width: 100,
+            height: 100,
+            colorDark: "#333333",
+            colorLight: "#FFFFFF",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // 下载功能
+        const downloadBtn = document.getElementById('downloadBtn');
+        const quoteCard = document.getElementById('quoteCard');
+
+        downloadBtn.addEventListener('click', async () => {
+            // 保存原始按钮文本
+            const originalText = downloadBtn.textContent;
+
+            // 更新按钮状态
+            downloadBtn.textContent = "下载中...";
+            downloadBtn.disabled = true;
+
+            try {
+                // 确保字体已加载
+                await document.fonts.ready;
+
+                // 使用html2canvas生成卡片图像
+                const canvas = await html2canvas(quoteCard, {
+                    backgroundColor: "#FFFFFF",
+                    scale: 2, // 提高清晰度
+                    logging: false
+                });
+
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.download = `摘录卡片-${new Date().toISOString().slice(0, 10)}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // 添加下载成功反馈
+                downloadBtn.textContent = "✓ 下载完成";
+                setTimeout(() => {
+                    downloadBtn.textContent = originalText;
+                    downloadBtn.disabled = false;
+                }, 1500);
+            } catch (error) {
+                console.error('生成卡片失败:', error);
+                downloadBtn.textContent = "下载失败，请重试";
+                setTimeout(() => {
+                    downloadBtn.textContent = originalText;
+                    downloadBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // 卡片加载动画
+        window.addEventListener('DOMContentLoaded', () => {
+            anime({
+                targets: '.quote-card',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                easing: 'easeOutCubic'
+            });
+
+            anime({
+                targets: '#downloadBtn',
+                translateY: [10, 0],
+                opacity: [0, 1],
+                delay: 300,
+                duration: 500,
+                easing: 'easeOutCubic'
+            });
+        });
+    </script>
+</body>
+</html>
