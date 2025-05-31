@@ -1,0 +1,169 @@
+:root {
+  --primary-text: #E0E0E0;
+  --secondary-text: #A0A0A0;
+  --divider: #424242;
+    --header-bg: linear-gradient(135deg, #1E1E1E, #333333);
+  --page-bg: #121212;
+  --card-bg: #1E1E1E;
+  --button-bg: #BB86FC;
+  --border: #333333;
+  --accent: #999;
+}
+
+body {
+  background-color: var(--page-bg);
+  color: var(--primary-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.7;
+  padding: 24px;
+  min-height: 100vh;
+  display: flex; /* For centering content if needed */
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+}
+
+/* Wrapper for the element we want to capture, including its padding for the shadow */
+.capture-wrapper {
+  padding: 16px; /* This is the base 16px transparent border */
+  display: inline-block; /* To make it shrink-wrap the quote-card for sizing */
+  /* background-color: rgba(255,0,0,0.1); */ /* For debugging wrapper size */
+}
+
+.quote-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* This is the shadow we want to capture */
+  max-width: 500px;
+  /* margin: 0 auto; /* Centering handled by body or another outer container if needed */
+  overflow: hidden; /* Original style, will be overridden in JS for capture */
+  padding-bottom: 16px;
+  transition: transform 0.3s ease;
+}
+
+.quote-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            padding: 25px 25px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+.quote-content {
+  padding: 28px;
+}
+
+.quote-item {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.quote-item:before {
+  content: """";
+  position: absolute;
+  top: -10px;
+  left: -18px;
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.15;
+  font-family: Georgia, serif;
+}
+
+.quote-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-translation {
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+  font-weight: 400;
+  border-left: 3px solid var(--accent);
+  padding: 8px 0 8px 16px;
+  margin: 12px 0 0 0;
+  line-height: 1.6;
+  background: rgba(187, 134, 252, 0.05);
+  border-radius: 0 4px 4px 0;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 24px 0;
+  border: none;
+}
+
+.qrcode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 24px;
+  border-top: 1px solid var(--divider);
+  background: rgba(255,255,255,0.03);
+}
+
+.qrcode-title {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.download-btn {
+  background: var(--button-bg);
+  color: #121212;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 30px auto 0;
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(187, 134, 252, 0.25);
+}
+
+.download-btn:hover {
+  background: #9b5cff;
+  box-shadow: 0 6px 20px rgba(187, 134, 252, 0.4);
+}
+
+@media (max-width: 768px) {
+  .quote-content { padding: 22px; }
+  .quote-text { font-size: 1.15rem; }
+  .download-btn { padding: 12px 28px; }
+}

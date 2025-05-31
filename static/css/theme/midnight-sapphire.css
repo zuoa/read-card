@@ -1,0 +1,154 @@
+/* 暗夜蓝宝石主题 */
+:root {
+    --primary-bg: #0a192f;
+    --card-bg: #112240;
+    --header-bg: linear-gradient(135deg, #0a192f, #112240);
+    --accent-color: #64ffda;
+    --text-primary: #ccd6f6;
+    --text-secondary: #8892b0;
+    --divider-color: rgba(100, 255, 218, 0.2);
+    --button-bg: #64ffda;
+    --button-text: #0a192f;
+    --qrcode-bg: rgba(17, 34, 64, 0.8);
+    --glow-effect: 0 0 15px rgba(100, 255, 218, 0.3);
+}
+
+body {
+    background: var(--primary-bg);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(17, 34, 64, 0.5) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(100, 255, 218, 0.1) 0%, transparent 20%);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+}
+
+.quote-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 16px;
+    box-shadow: var(--glow-effect), 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-header {
+    background: var(--header-bg);
+    padding: 28px 30px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+.card-title {
+    color: var(--accent-color);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+}
+
+.card-date {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.quote-text {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    position: relative;
+    padding-left: 20px;
+}
+
+.quote-text::before {
+    content: '“';
+    position: absolute;
+    left: -10px;
+    top: -15px;
+    font-size: 4rem;
+    color: var(--accent-color);
+    opacity: 0.1;
+    font-family: Georgia, serif;
+}
+
+.quote-translation {
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent-color);
+    padding: 12px 0 12px 20px;
+    margin: 15px 0 0 0;
+    line-height: 1.7;
+    background: rgba(100, 255, 218, 0.05);
+    border-radius: 0 8px 8px 0;
+}
+
+.divider {
+    height: 1px;
+    background: var(--divider-color);
+    margin: 25px 0;
+    position: relative;
+}
+
+.divider::after {
+    content: "•••";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    color: var(--accent-color);
+    padding: 0 15px;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+}
+
+.qrcode-container {
+    background: var(--qrcode-bg);
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.qrcode-title {
+    color: var(--accent-color);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.download-btn {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.6);
+}
+
+.download-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40px;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(25deg);
+    transition: all 0.6s;
+}
+
+.download-btn:hover::after {
+    left: 120%;
+}

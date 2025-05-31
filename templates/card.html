@@ -24,6 +24,7 @@
         :root {
             --primary-text: #212121;
             --secondary-text: #757575;
+            --header-bg: #fcfcfc;
             --divider: #EEEEEE;
             --page-bg: #F8F9FA;
             --card-bg: #FFFFFF;
@@ -52,13 +53,13 @@
         }
 
         .card-header {
-            background: #fcfcfc;
+            background: var(--header-bg);
             border-top-right-radius: 12px;
             border-top-left-radius: 12px;
             padding: 25px 25px 15px;
             position: relative;
             overflow: hidden;
-            border-bottom: 1px solid #F3F3F3;
+            border-bottom: 1px solid var(--border);
         }
 
         .card-title {
@@ -200,13 +201,21 @@
             }
         }
     </style>
+    {% if theme %}
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme/' + theme + '.css') }}" id="theme-css">
+    {%endif%}
 </head>
 <body>
     <div class="quote-card" id="quoteCard">
         <div class="card-header">
             <div class="card-bg"></div>
-            <h2 class="card-title">READ CARD</h2>
-            <p class="card-date">{{day}}</p>
+            <h2 class="card-title">{{title}}</h2>
+            <p class="card-date">
+                {% if author %}
+                <span style="margin-right: 8px">{{author}}</span>
+                {% endif %}
+                {{day}}
+            </p>
 
         </div>
         <div class="quote-content">
@@ -225,16 +234,16 @@
         <!-- 二维码区域 -->
         <div class="qrcode-container">
             <div id="qrcode"></div>
-            <div class="qrcode-title" id="qrcodeTitle">{{title}}</div>
+            <div class="qrcode-title" id="qrcodeTitle">{{remark}}</div>
         </div>
     </div>
 
-    <button class="download-btn" id="downloadBtn">下载知识卡片</button>
+    <button class="download-btn" id="downloadBtn">保存卡片</button>
 
     <script>
         // 设置页面标题和二维码标题
         document.title = "{{ title }}";
-        document.getElementById('qrcodeTitle').textContent = document.title;
+        document.getElementById('qrcodeTitle').textContent = "{{ remark }}";
 
         // 生成二维码
         new QRCode(document.getElementById("qrcode"), {

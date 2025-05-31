@@ -32,6 +32,9 @@ def index_page():
 def view_core_segments(ori_url):
     if not ori_url:
         return jsonify({'error': '缺少 url 参数'}), 400
+    author = request.args.get('author', '')
+    theme = request.args.get('theme', '')
+    title = request.args.get('title', 'READ CARD')
     markdown = get_markdown_from_url(ori_url)
     if not markdown:
         print(f"Failed to get markdown for URL: {ori_url}")  # 添加日志
@@ -41,7 +44,7 @@ def view_core_segments(ori_url):
         print(f"Failed to extract sentences from markdown for URL: {ori_url}")  # 添加日志
         return jsonify({'error': '提炼核心语句失败'}), 500
     print(f"Extracted sentences: {quotes}")  # 添加日志
-    return render_template('card.html', quotes=quotes, ori_url=ori_url, day=datetime.datetime.now().strftime("%Y/%m/%d"), title='READ CARD ' + datetime.datetime.now().strftime("%Y/%m/%d"))
+    return render_template('card.html', quotes=quotes, ori_url=ori_url, author=author, theme=theme, day=datetime.datetime.now().strftime("%Y/%m/%d"), title=title)
 
 @app.route('/render/<path:ori_url>', methods=['GET'])
 def core_sentences_image(ori_url):
@@ -49,6 +52,8 @@ def core_sentences_image(ori_url):
     if not ori_url:
         print("URL is empty")  # 添加日志
         return jsonify({'error': '缺少 url 参数'}), 400
+
+
     markdown = get_markdown_from_url(ori_url)
     if not markdown:
         print(f"Failed to get markdown for URL: {ori_url}")  # 添加日志
