@@ -1,0 +1,7 @@
+requests
+flask
+peewee
+pillow
+gunicorn
+openai
+python-dotenv
