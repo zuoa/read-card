@@ -35,11 +35,12 @@ def view_core_segments(ori_url):
     author = request.args.get('author', '')
     theme = request.args.get('theme', '')
     title = request.args.get('title', 'READ CARD')
+    quote_number = request.args.get('n', 3)
     markdown = get_markdown_from_url(ori_url)
     if not markdown:
         print(f"Failed to get markdown for URL: {ori_url}")  # 添加日志
         return jsonify({'error': '获取原文失败'}), 500
-    quotes = extract_core_sentences_from_markdown(markdown)
+    quotes = extract_core_sentences_from_markdown(markdown, quote_number)
     if not quotes:
         print(f"Failed to extract sentences from markdown for URL: {ori_url}")  # 添加日志
         return jsonify({'error': '提炼核心语句失败'}), 500

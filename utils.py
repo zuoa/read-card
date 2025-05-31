@@ -54,24 +54,24 @@ def get_markdown_from_url(url):
         print(f"Jina Reader 获取失败: {e}")
         return ''
 
-def extract_core_sentences_from_markdown(markdown_text):
+def extract_core_sentences_from_markdown(markdown_text, quote_number=3):
     """
     调用 LLM 提炼3句核心语句，返回list[str]。
     """
-    prompt = """
-你是一个内容摘要助手。请从以下markdown内容中，提炼出3句最能代表原文核心思想的语句，要求保留原文,不要精简、不要添加解释。
-
+    prompt = f"""
+你是一个内容摘要助手。请从以下markdown内容中，提炼出{quote_number}句最能代表原文核心思想的语句，要求保留原文,不要精简、不要添加解释。
 
 ## 任务要求
 ### 内容提取与呈现 (Card Content Extraction & Presentation)
 1.  **精准核心语句提取**：
-    * a. **核心语句选择**：从提供的文章中，智能识别并提取**不多于3句**最能代表核心观点的句子。优先选择简洁、有力的表达。
+    * a. **核心语句选择**：从提供的文章中，智能识别并提取**不多于{quote_number}句**最能代表核心观点的句子。优先选择简洁、有力的表达。
     * b. **原文保留**：**严格保留核心语句的原文**，不进行任何形式的改写或总结。
 
 2.  **双语对照（如适用）**：
     * 若原文为英文，务必在每个英文核心语句下方提供**精炼、准确、自然的简体中文翻译**。
     * 若原文为中文，务必在每个中文核心语句下方提供**精炼、准确、自然的英文翻译**。
-
+"""
+    prompt+= """\n\n
 ## 响应格式
 以json列表格式返回，包含以下字段：text、translation。text字段为提炼的核心语句列表，translation字段为对应的翻译。
 参考格式：[{"text": "核心语句1", "translation": "对应翻译1"}, {"text": "核心语句2", "translation": "对应翻译2"}, {"text": "核心语句3", "translation": "对应翻译3"}]
@@ -83,7 +83,7 @@ def extract_core_sentences_from_markdown(markdown_text):
 {markdown_text}
 ```
 
-现在请根据以上内容，提炼出3句核心语句，并返回json格式的结果。
+现在请根据以上内容，提炼出{quote_number}句核心语句，并返回json格式的结果。
 """
     result = llm_chat(prompt)
     # 按行分割，去除空行
