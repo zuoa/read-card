@@ -46,7 +46,8 @@
             box-shadow: 0 2px 5px 2px rgba(0,0,0,0.05);
             max-width: 480px;
             margin: 0 auto;
-            overflow: hidden;
+            overflow: visible;
+            padding-bottom: 20px;
         }
 
         .quote-content {
@@ -68,7 +69,11 @@
             color: var(--secondary-text);
             font-weight: 400;
             border-left: 2px solid #EEE;
-            padding-left: 8px;
+            padding: 4px 0 4px 12px;
+            margin: 4px 0 0 0;
+            line-height: 1.5;
+            position: relative;
+            left: -2px;
         }
 
         .divider {
@@ -90,10 +95,9 @@
             color: var(--secondary-text);
             margin-top: 12px;
             text-align: center;
-            max-width: 80%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
         }
 
         .download-btn {
@@ -221,7 +225,14 @@
                 const canvas = await html2canvas(quoteCard, {
                     backgroundColor: "#FFFFFF",
                     scale: 2, // 提高清晰度
-                    logging: false
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    onclone: (clonedDoc) => {
+                        const clonedCard = clonedDoc.getElementById('quoteCard');
+                        clonedCard.style.transform = 'none';
+                        clonedCard.style.boxShadow = 'none';
+                    }
                 });
 
                 // 创建下载链接
