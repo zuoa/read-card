@@ -44,7 +44,9 @@ def get_markdown_from_url(url):
     """
     reader_url = f"https://r.jina.ai/{url}"
     headers = {
-        'Accept': 'text/markdown'
+        'Accept': 'text/markdown',
+        'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
+        "X-Engine": "cf-browser-rendering"
     }
     try:
         resp = requests.get(reader_url, headers=headers, timeout=15)
