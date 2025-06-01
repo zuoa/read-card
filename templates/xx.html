@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>READ CARD 2025/05/31</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<style>
+:root {
+  --primary-text: #E0E0E0;
+  --secondary-text: #A0A0A0;
+  --divider: #424242;
+  --page-bg: #121212;
+  --card-bg: #1E1E1E;
+  --button-bg: #BB86FC;
+  --border: #333333;
+  --accent: #BB86FC;
+}
+
+body {
+  background-color: var(--page-bg);
+  color: var(--primary-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.7;
+  padding: 24px;
+  min-height: 100vh;
+  display: flex; /* For centering content if needed */
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+}
+
+/* Wrapper for the element we want to capture, including its padding for the shadow */
+.capture-wrapper {
+  padding: 16px; /* This is the base 16px transparent border */
+  display: inline-block; /* To make it shrink-wrap the quote-card for sizing */
+  /* background-color: rgba(255,0,0,0.1); */ /* For debugging wrapper size */
+}
+
+.quote-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3); /* This is the shadow we want to capture */
+  max-width: 500px;
+  /* margin: 0 auto; /* Centering handled by body or another outer container if needed */
+  overflow: hidden; /* Original style, will be overridden in JS for capture */
+  padding-bottom: 16px;
+  transition: transform 0.3s ease;
+}
+
+.quote-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            padding: 25px 25px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+.quote-content {
+  padding: 28px;
+}
+
+.quote-item {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.quote-item:before {
+  content: """";
+  position: absolute;
+  top: -10px;
+  left: -18px;
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.15;
+  font-family: Georgia, serif;
+}
+
+.quote-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-translation {
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+  font-weight: 400;
+  border-left: 3px solid var(--accent);
+  padding: 8px 0 8px 16px;
+  margin: 12px 0 0 0;
+  line-height: 1.6;
+  background: rgba(187, 134, 252, 0.05);
+  border-radius: 0 4px 4px 0;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 24px 0;
+  border: none;
+}
+
+.qrcode-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 24px;
+  border-top: 1px solid var(--divider);
+  background: rgba(255,255,255,0.03);
+}
+
+.qrcode-title {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.download-btn {
+  background: var(--button-bg);
+  color: #121212;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 30px auto 0;
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(187, 134, 252, 0.25);
+}
+
+.download-btn:hover {
+  background: #9b5cff;
+  box-shadow: 0 6px 20px rgba(187, 134, 252, 0.4);
+}
+
+@media (max-width: 768px) {
+  .quote-content { padding: 22px; }
+  .quote-text { font-size: 1.15rem; }
+  .download-btn { padding: 12px 28px; }
+}
+</style>
+     <link rel="stylesheet" href="../static/css/theme/sunset.css" id="theme-css">
+</head>
+<body>
+    <div class="capture-wrapper" id="captureWrapper">
+        <div class="quote-card" id="quoteCard">
+            <div class="card-header">
+                    <div class="card-bg"></div>
+                    <h2 class="card-title">READ CARD</h2>
+                    <p class="card-date">2023年10月15日</p>
+
+                </div>
+            <div class="quote-content">
+                <div class="quote-item">
+                    <p class="quote-text">But, still: the current level of AI is useful, great too, but so incredibly behind human intelligence, and I want to remark this as lately it is impossible to have balanced conversations.</p>
+                    <p class="quote-translation">但是，仍然：当前AI的水平是有用的，也很棒，但与人类的智能相比还差得很远，我想强调这一点，因为最近几乎不可能进行平衡的对话。</p>
+                </div>
+                <div class="divider"></div>
+                <div class="quote-item">
+                    <p class="quote-text">Well, all this to say: I just finished the analysis and stopped to write this blog post, I'm not sure if I'm going to use this system (but likely yes), but, the creativity of humans still have an edge, we are capable of really thinking out of the box, envisioning strange and imprecise solutions that can work better than others.</p>
+                    <p class="quote-translation">总之，我想说的是：我刚完成分析并停下来写这篇博客文章，我不确定是否会使用这个系统（但很可能会的），但是，人类的创造力仍然占优势，我们能够真正跳出框框思考，设想出奇怪且不精确但可能比其他方法更好的解决方案。</p>
+                </div>
+                <div class="divider"></div>
+                <div class="quote-item">
+                    <p class="quote-text">This is something that is extremely hard for LLMs.</p>
+                    <p class="quote-translation">这是LLMs极其难以做到的事情。</p>
+                </div>
+            </div>
+            <div class="qrcode-container">
+                <div id="qrcode"></div>
+                <div class="qrcode-title" id="qrcodeTitle">READ CARD 2025/05/31</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">下载知识卡片</button>
+
+    <script>
+        // 设置页面标题和二维码标题
+        document.title = "READ CARD 2025/05/31";
+        const qrcodeTitleEl = document.getElementById('qrcodeTitle');
+        if (qrcodeTitleEl) {
+            qrcodeTitleEl.textContent = document.title;
+        }
+
+
+        // 生成二维码
+        const qrcodeElement = document.getElementById("qrcode");
+        if (qrcodeElement) {
+            new QRCode(qrcodeElement, {
+                text: 'https://t.co/KE3BacpEZC',
+                width: 100,
+                height: 100,
+                colorDark: "#333333",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+
+        // 下载功能
+        const downloadBtn = document.getElementById('downloadBtn');
+        const quoteCard = document.getElementById('quoteCard');
+        // The element to capture is the wrapper div that provides the 16px base padding
+        const elementToCapture = document.getElementById('captureWrapper');
+
+        if (downloadBtn && quoteCard && elementToCapture) {
+            downloadBtn.addEventListener('click', async () => {
+                const originalText = downloadBtn.textContent;
+                downloadBtn.textContent = "下载中...";
+                downloadBtn.disabled = true;
+
+                try {
+                    await document.fonts.ready;
+
+                    const scaleFactor = 2;
+                    // Extra space added to the clone of elementToCapture to ensure shadow is rendered
+                    const shadowRenderMargin = 60; // pixels, unscaled. Should be enough for a 30px blur shadow.
+
+                    // Get original dimensions of the element we want to capture (wrapper with 16px padding)
+                    const originalWrapperWidth = elementToCapture.offsetWidth;
+                    const originalWrapperHeight = elementToCapture.offsetHeight;
+
+                    const canvas = await html2canvas(elementToCapture, {
+                        backgroundColor: null, // Transparent background for the overall canvas
+                        scale: scaleFactor,
+                        logging: false,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: -window.scrollX, // Handle page scroll
+                        scrollY: -window.scrollY,
+                        windowWidth: document.documentElement.scrollWidth, // Use scrollWidth for full content width
+                        windowHeight: document.documentElement.scrollHeight, // Use scrollHeight for full content height
+                        onclone: (clonedDocument) => {
+                            const clonedCard = clonedDocument.getElementById('quoteCard');
+                            const clonedWrapper = clonedDocument.getElementById('captureWrapper');
+
+                            if (clonedCard && clonedWrapper) {
+                                // --- Style the card itself ---
+                                clonedCard.style.transform = 'none'; // Reset any transforms
+                                clonedCard.style.margin = '0'; // Reset margin if any, rely on wrapper's padding
+                                clonedCard.style.overflow = 'visible'; // CRITICAL: Allow shadow to be drawn outside card bounds
+
+                                // --- Style the wrapper (elementToCapture) ---
+                                // Make the wrapper transparent
+                                clonedWrapper.style.backgroundColor = 'transparent';
+                                // Ensure wrapper also allows overflow from card's shadow
+                                clonedWrapper.style.overflow = 'visible';
+                                // Temporarily increase padding on the cloned wrapper to make space for the shadow
+                                // The base padding is 16px (from its inline style or class). We add shadowRenderMargin.
+                                const basePadding = 16; // px, as per your .capture-wrapper or inline style
+                                clonedWrapper.style.padding = (basePadding + shadowRenderMargin) + 'px';
+                                // Ensure display allows it to size correctly with new padding
+                                clonedWrapper.style.display = 'inline-block'; // or 'block' if preferred, inline-block helps shrink-wrap
+                            }
+                        }
+                    });
+
+                    // The 'canvas' from html2canvas is now based on the *enlarged* clonedWrapper.
+                    // We need to crop the section corresponding to the original wrapper size,
+                    // but offset to include the shadow.
+
+                    const finalCanvas = document.createElement('canvas');
+                    // The final image should have the dimensions of the original wrapper, scaled
+                    finalCanvas.width = originalWrapperWidth * scaleFactor;
+                    finalCanvas.height = originalWrapperHeight * scaleFactor;
+                    const finalCtx = finalCanvas.getContext('2d');
+
+                    // Source X, Y on the large canvas: where the original content starts within the enlarged render
+                    // (due to the added shadowRenderMargin in padding)
+                    const sx = shadowRenderMargin * scaleFactor;
+                    const sy = shadowRenderMargin * scaleFactor;
+                    // Source Width, Height: the size of the content we want to grab (original wrapper size, scaled)
+                    const sWidth = originalWrapperWidth * scaleFactor;
+                    const sHeight = originalWrapperHeight * scaleFactor;
+
+                    // Destination X, Y, Width, Height: draw onto the final canvas at 0,0 with final dimensions
+                    finalCtx.drawImage(canvas, sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
+
+                    const link = document.createElement('a');
+                    link.download = `摘录卡片-${new Date().toISOString().slice(0, 10)}.png`;
+                    link.href = finalCanvas.toDataURL('image/png');
+                    link.click();
+
+                    downloadBtn.textContent = "✓ 下载完成";
+                    setTimeout(() => {
+                        downloadBtn.textContent = originalText;
+                        downloadBtn.disabled = false;
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('生成卡片失败:', error);
+                    downloadBtn.textContent = "下载失败，请重试";
+                    setTimeout(() => {
+                        downloadBtn.textContent = originalText;
+                        downloadBtn.disabled = false;
+                    }, 2000);
+                }
+            });
+        }
+
+
+        // 卡片加载动画
+        window.addEventListener('DOMContentLoaded', () => {
+            const cardForAnimation = document.querySelector('.quote-card');
+            const btnForAnimation = document.querySelector('#downloadBtn');
+
+            if (cardForAnimation) {
+                anime({
+                    targets: cardForAnimation,
+                    translateY: [20, 0],
+                    opacity: [0, 1],
+                    duration: 600,
+                    easing: 'easeOutCubic'
+                });
+            }
+            if (btnForAnimation) {
+                anime({
+                    targets: btnForAnimation,
+                    translateY: [10, 0],
+                    opacity: [0, 1],
+                    delay: 300,
+                    duration: 500,
+                    easing: 'easeOutCubic'
+                });
+            }
+        });
+    </script>
+</body>
+</html>

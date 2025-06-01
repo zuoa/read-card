@@ -35,6 +35,7 @@ def view_core_segments(ori_url):
     author = request.args.get('author', '')
     theme = request.args.get('theme', '')
     title = request.args.get('title', 'READ CARD')
+    remark = request.args.get('remark', '')
     quote_number = request.args.get('n', 3)
     markdown = get_markdown_from_url(ori_url)
     if not markdown:
@@ -45,7 +46,7 @@ def view_core_segments(ori_url):
         print(f"Failed to extract sentences from markdown for URL: {ori_url}")  # 添加日志
         return jsonify({'error': '提炼核心语句失败'}), 500
     print(f"Extracted sentences: {quotes}")  # 添加日志
-    return render_template('card.html', quotes=quotes, ori_url=ori_url, author=author, theme=theme, day=datetime.datetime.now().strftime("%Y/%m/%d"), title=title)
+    return render_template('card.html', quotes=quotes, ori_url=ori_url, author=author, theme=theme, day=datetime.datetime.now().strftime("%Y/%m/%d"), title=title, remark=remark)
 
 @app.route('/render/<path:ori_url>', methods=['GET'])
 def core_sentences_image(ori_url):
