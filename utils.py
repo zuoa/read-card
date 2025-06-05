@@ -45,9 +45,15 @@ def get_markdown_from_url(url):
     reader_url = f"https://r.jina.ai/{url}"
     headers = {
         'Accept': 'text/markdown',
-        'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
-        "X-Engine": "cf-browser-rendering"
     }
+
+    if url.contains('://mp.weixin.qq.com/'):
+        headers = {
+            'Accept': 'text/markdown',
+            'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
+            "X-Engine": "cf-browser-rendering"
+        }
+
     try:
         resp = requests.get(reader_url, headers=headers, timeout=15)
         resp.raise_for_status()
