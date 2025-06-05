@@ -31,7 +31,7 @@ def index_page():
 @app.route('/view/<path:ori_url>', methods=['GET'])
 def view_core_segments(ori_url):
     if not ori_url:
-        return jsonify({'error': '缺少 url 参数'}), 400
+        return render_template("error.html", error_message="缺少 url 参数，请提供有效的 URL。")
     author = request.args.get('author', '')
     theme = request.args.get('theme', '')
     title = request.args.get('title', 'READ CARD')
@@ -40,11 +40,11 @@ def view_core_segments(ori_url):
     markdown = get_markdown_from_url(ori_url)
     if not markdown:
         print(f"Failed to get markdown for URL: {ori_url}")  # 添加日志
-        return jsonify({'error': '获取原文失败'}), 500
+        return render_template("error.html", error_message="获取原文失败，请检查 URL 是否正确。")
     quotes = extract_core_sentences_from_markdown(markdown, quote_number)
     if not quotes:
         print(f"Failed to extract sentences from markdown for URL: {ori_url}")  # 添加日志
-        return jsonify({'error': '提炼核心语句失败'}), 500
+        return render_template("error.html", error_message="提炼核心语句失败，请稍后再试。")
     print(f"Extracted sentences: {quotes}")  # 添加日志
     return render_template('card.html', quotes=quotes, ori_url=ori_url, author=author, theme=theme, day=datetime.datetime.now().strftime("%Y/%m/%d"), title=title, remark=remark)
 
