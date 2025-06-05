@@ -55,7 +55,7 @@ def get_markdown_from_url(url):
         }
 
     try:
-        resp = requests.get(reader_url, headers=headers, timeout=15)
+        resp = requests.get(reader_url, headers=headers, timeout=30)
         resp.raise_for_status()
         return resp.text
     except Exception as e:
