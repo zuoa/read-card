@@ -47,7 +47,7 @@ def get_markdown_from_url(url):
         'Accept': 'text/markdown',
     }
 
-    if '://mp.weixin.qq.com/' in url:
+    if '://mp.weixin.qq.com/' in url.lower():
         headers = {
             'Accept': 'text/markdown',
             'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
