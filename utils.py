@@ -1,5 +1,7 @@
 import json
 import os
+from urllib.parse import unquote
+
 import requests
 import io
 from PIL import Image, ImageDraw, ImageFont
@@ -42,12 +44,15 @@ def get_markdown_from_url(url):
     """
     调用 Jina Reader API 获取指定 URL 的 markdown 内容。
     """
+    # url decode
+    url_decoded = unquote(url)
+
     reader_url = f"https://r.jina.ai/{url}"
     headers = {
         'Accept': 'text/markdown',
     }
 
-    if '://mp.weixin.qq.com/' in url.lower():
+    if '://mp.weixin.qq.com/' in url_decoded.lower():
         headers = {
             'Accept': 'text/markdown',
             'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
