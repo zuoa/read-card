@@ -46,6 +46,7 @@ def get_markdown_from_url(url):
     """
     # url decode
     url_decoded = unquote(url)
+    print(url_decoded)
 
     reader_url = f"https://r.jina.ai/{url}"
     headers = {
@@ -53,6 +54,7 @@ def get_markdown_from_url(url):
     }
 
     if '://mp.weixin.qq.com/' in url_decoded.lower():
+        print("微信公众号文章，使用特定的 API Key")
         headers = {
             'Accept': 'text/markdown',
             'Authorization': f'Bearer {os.environ.get("JINA_READER_API_KEY", "")}',
